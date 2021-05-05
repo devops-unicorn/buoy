@@ -11,17 +11,15 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Retrieve version
-      run: |
-        echo ::set-output name=TAG_NAME::$(git describe --abbrev=0)
-      id: version
+    - uses: olegtarasov/get-tag@v2.1
+      id: tagName
     # - name: Create Release
     #   id: create_release
     #   uses: actions/create-release@v1
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_TOKEN }}
     #   with:
-    #     tag_name: ${{ env.TAG_NAME }}
+    #     tag_name: ${{ steps.tagName.outputs.tag }} 
     - name: Docker Build & Push to Docker Hub
       uses: opspresso/action-docker@master
       with:
@@ -31,7 +29,7 @@ jobs:
         PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         DOCKERFILE: "Dockerfile"
         IMAGE_NAME: "devopsunicorn2021/buoy"
-        TAG_NAME: ${{ steps.version.outputs.TAG_NAME }}  
+        TAG_NAME: ${{ steps.tagName.outputs.tag }}  
         LATEST: "true"
 
     # - name: Docker Build & Push to GitHub Package
@@ -44,5 +42,5 @@ jobs:
     #     REGISTRY: "docker.pkg.github.com"
     #     DOCKERFILE: "Dockerfile"
     #     IMAGE_NAME: buoy
-    #     TAG_NAME: ${{ steps.previoustag.outputs.tag }}
+    #     TAG_NAME: ${{ steps.tagName.outputs.tag }} 
     #     LATEST: "true"
