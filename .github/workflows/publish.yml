@@ -1,23 +1,27 @@
 name: build and publish docker image
 on:
   push:
-    branch: [master]
+    branch: [main]
   pull_request:
-    branch: [master]
+    branch: [main]
     
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
-    - name: Get Previous tag
-      id: previoustag
-      uses: "WyriHaximus/github-action-get-previous-tag@v1"
-      with:
-        fallback: 0.0.1 # Optional fallback tag to use when no tag can be found
-
     - name: Checkout code
       uses: actions/checkout@v2
-
+    - name: Retrieve version
+      run: |
+        echo ::set-output name=TAG_NAME::$(git describe --abbrev=0)
+      id: version
+    # - name: Create Release
+    #   id: create_release
+    #   uses: actions/create-release@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GH_PERSONAL_TOKEN }}
+    #   with:
+    #     tag_name: ${{ env.TAG_NAME }}
     - name: Docker Build & Push to Docker Hub
       uses: opspresso/action-docker@master
       with:
@@ -27,7 +31,7 @@ jobs:
         PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         DOCKERFILE: "Dockerfile"
         IMAGE_NAME: "devopsunicorn2021/buoy"
-        TAG_NAME: ${{ steps.previoustag.outputs.tag }}
+        TAG_NAME: ${{ steps.version.outputs.TAG_NAME }}  
         LATEST: "true"
 
     # - name: Docker Build & Push to GitHub Package
