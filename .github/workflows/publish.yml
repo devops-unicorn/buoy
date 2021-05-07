@@ -28,7 +28,7 @@ jobs:
         USERNAME: ${{ secrets.DOCKER_USERNAME }}
         PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         DOCKERFILE: "Dockerfile"
-        IMAGE_NAME: "devopsunicorn2021/buoy"
+        IMAGE_NAME: "devopsunicorn/buoy"
         TAG_NAME: ${{ steps.tagName.outputs.tag }}  
         LATEST: "true"
 
