@@ -1,10 +1,14 @@
 name: build and test
 on:
   push:
-    branch: [master]
+    branches: 
+      - 'development'
+      - main
   pull_request:
-    branch: [master]
-    
+    branches: 
+      - 'development'
+      - main
+
 jobs:
   test:
     strategy:

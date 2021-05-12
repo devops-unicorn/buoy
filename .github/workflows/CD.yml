@@ -1,8 +1,5 @@
 name: deploy to heroku
-on: 
-  pull_request:
-    tags:
-      - "*" # triggers only if push new tag version, like `0.8.4` or else
+on: repository_dispatch
     
 jobs:
   build:
@@ -10,6 +7,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          ref: main
       - name: Deploy to Heroku 
         id: heroku
         uses: cloutojp/heroku-deploy@v1.0.0  # use the latest version of the action
