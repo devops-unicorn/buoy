@@ -38,7 +38,7 @@ jobs:
         PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         DOCKERFILE: "Dockerfile"
         IMAGE_NAME: "devopsunicorn/buoy"
-        TAG_NAME: ${{ steps.get_tag.outputs.SOURCE_TAG }}
+        TAG_NAME: ${{ steps.meta.outputs.version }}
         LATEST: "true"
 
     # - name: Docker Build & Push to GitHub Package
