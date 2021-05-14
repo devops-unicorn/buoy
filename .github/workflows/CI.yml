@@ -55,5 +55,5 @@ jobs:
           PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKERFILE: "Dockerfile"
           IMAGE_NAME: "devopsunicorn/buoy"
-          TAG_NAME: ${{ steps.meta.outputs.tags }}
+          TAG_NAME: ${{ steps.meta.outputs.version }}
           LATEST: "true"
