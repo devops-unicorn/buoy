@@ -1,8 +1,8 @@
 name: build and publish docker image
 on:
   pull_request:
-    tags:
-      - "*" # triggers only if push new tag version, like `0.8.4` or else
+    branches: 
+      - main
     
 jobs:
   build-and-publish:
@@ -10,8 +10,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - uses: olegtarasov/get-tag@v2.1
-      id: tagName
+    - name: Get tag name
+      id: get_tag
+      run: echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
     # - name: Create Release
     #   id: create_release
     #   uses: actions/create-release@v1
@@ -28,7 +29,7 @@ jobs:
         PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         DOCKERFILE: "Dockerfile"
         IMAGE_NAME: "devopsunicorn/buoy"
-        TAG_NAME: ${{ steps.tagName.outputs.tag }}  
+        TAG_NAME: ${{ steps.get_tag.outputs.SOURCE_TAG }}
         LATEST: "true"
 
     # - name: Docker Build & Push to GitHub Package
