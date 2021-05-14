@@ -16,6 +16,10 @@ jobs:
     - name: Get tag name
       id: get_tag
       run: echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+    - name: test tag name
+      env:
+        SOURCE_TAG: ${{ steps.get_tag.outputs.SOURCE_TAG }}
+      run: echo ${{ steps.get_tag.outputs.SOURCE_TAG }}
     # - name: Create Release
     #   id: create_release
     #   uses: actions/create-release@v1
