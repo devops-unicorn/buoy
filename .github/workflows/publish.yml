@@ -1,9 +1,12 @@
 name: build and publish docker image
 on:
-  pull_request:
+  push:
     branches: 
       - main
-    
+  pull_request:
+    branches:
+      - main
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
