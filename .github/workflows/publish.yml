@@ -7,13 +7,21 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Get tag name
-      id: get_tag
-      run: echo ::set-output name=SOURCE_TAG::echo $(git describe --tags --abbrev=0)
-    - name: test tag name
-      env:
-        SOURCE_TAG: ${{ steps.get_tag.outputs.SOURCE_TAG }}
-      run: echo ${{ steps.get_tag.outputs.SOURCE_TAG }}
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v3
+      with:
+        images:
+          devopsunicorn/buoy
+        # generate Docker tags based on the following events/attributes
+        tags: |
+          type=schedule
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+          type=sha
     # - name: Create Release
     #   id: create_release
     #   uses: actions/create-release@v1
