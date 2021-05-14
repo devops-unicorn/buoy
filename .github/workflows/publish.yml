@@ -1,11 +1,5 @@
 name: build and publish docker image
-on:
-  push:
-    branches: 
-      - main
-  pull_request:
-    branches:
-      - main
+on: repository_dispatch
 
 jobs:
   build-and-publish:
