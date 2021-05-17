@@ -20,6 +20,7 @@ script:
   - go test -v .
   - chmod +x ./scripts/docker-build.sh
   - "./scripts/docker-build.sh"
+  #Testiing purpose
   - echo $DOCKER_USERNAME 
   - docker login --username $DOCKER_USERNAME --password-stdin
 
