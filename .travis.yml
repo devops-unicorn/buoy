@@ -22,8 +22,11 @@ script:
   - "./scripts/docker-build.sh"
   # Testing
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - echo $TAG
+  - echo $COMMIT
 
 after_success:
+  - echo $TAG
+  - echo $COMMIT
   - docker tag devopsunicorn/buoy:$COMMIT devopsunicorn/buoy:$TAG  
   - docker push devopsunicorn/buoy:$TAG
-
