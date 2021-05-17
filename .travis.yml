@@ -17,6 +17,7 @@ services:
   - docker
 
 before_script:
+  - chmod +x ./scripts/docker-build.sh
   - "./scripts/docker-build.sh"
 
 script:
