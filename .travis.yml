@@ -18,15 +18,20 @@ services:
 
 script:
   - go test -v .
-  - chmod +x ./scripts/docker-build.sh
-  - "./scripts/docker-build.sh"
+  - export TAG=$(git ls-remote --tags | awk '{print $2}' | grep -v '{}' | awk -F"/" '{print $3}' | tail -n 1)
+  - export COMMIT=$(git ls-remote | grep refs/heads/main | cut -f 1)
+  - docker build -t devopsunicorn/buoy:$COMMIT .
+  # docker run -d --name test devopsunicorn/buoy:$COMMIT
+  - docker ps -a
   # Testing
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
   - echo $TAG
   - echo $COMMIT
-
-after_success:
-  - echo $TAG
-  - echo $COMMIT
   - docker tag devopsunicorn/buoy:$COMMIT devopsunicorn/buoy:$TAG  
   - docker push devopsunicorn/buoy:$TAG
+
+# after_success:
+#   - echo $TAG
+#   - echo $COMMIT
+#   - docker tag devopsunicorn/buoy:$COMMIT devopsunicorn/buoy:$TAG  
+#   - docker push devopsunicorn/buoy:$TAG
