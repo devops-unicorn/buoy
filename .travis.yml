@@ -20,7 +20,7 @@ script:
   - go test -v .
   - chmod +x ./scripts/docker-build.sh
   - "./scripts/docker-build.sh"
-  - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
 
 after_success:
   - docker tag devopsunicorn/buoy:$COMMIT devopsunicorn/buoy:$TAG  
