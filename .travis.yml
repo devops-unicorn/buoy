@@ -12,23 +12,17 @@ env:
   global:
     - secure: FdVuGnK3+qY7ndVb6YP8Y13YjvLZly3PM+W+tsR77WGVDGm9oSSLXkCGAs88laMHzMMjHBvMEEoYL3gosWsk2MmOwr/LFxe7/fyH8IXeJsYFGViHl8ybbKnAlhKUPKKbpRaYb3G3OtClm/R4ONoX0ok/IHlkjF6iF9AO8rlRRqJyHzVlnIegNzaPAGaVl3yQDL3+skznDee/ZUOkz197t0ameVWICmzCXTBIyeCD4AUWbtn+i/VLVFDd6o3twlFOhhnAkrL0CbFBChdKB2RRDDQEIzXrdptj+i/96JL9BA3aQGph+76GSwzfO5Uk68dCglFdwMmZlm8+B17SaTt9ve6/4RTDWxEBPz5CY6+0KhsKGIXa5te86T6TX7NsuRUqTEwb7SjjRH1aQZ9FumC7nHinUVY+ObCoB+6XtobXWXeU670KUjCTTgPa9i0DzDDnxBsjwSFP4iwK60u+plr3sMqugto3Iky460nBz53OsFkfLE73EcXGm3LATM5gwN2x959mDY6zzTVW/P6ynT2emEVH43I8Qdz5qrZP3iah6ST93knwB6/eLzn9nwWocgYyJZhFxVxF/rnhwdXfXnP+Q3h6xnQj2kzNXFt1/gG4AJecPRUjk9e5cHMyOse7mkxKsALUE1TA+HOtlnVmcbZktYm7QjRLukG6I1JBGYOiT+w=
     - secure: iyAYr5cfT9M9zHHvWVYtCBXzaHI/sxPmxExRXL43TGT1ELvnSbhFQdGblhoshiEb0e2JCoQpi9UVlDoC5S2cAv3sRN8kSIHo3C+9xfGSxDE9Z2h17mvMLFaxkzzfwWP30R3RVS4PqrxrG5bjJO/8NJpondYYgyu/0A3s5ZazU7ncAchS5rXKeGwxkRiYOn0VeeYiG/jAf0bruK4Jj7/+Soj0oEqFhHyz4zuev6FBFQ8b792FpGpKlxIzxzm/A3ZFEKUaOjSHYLEEXMX1rVTQjjdl+LwTQLAyXb9JCVSFII0NxJp7Kx6bAxry4SR4UVlAOX5YxL5wWLOZoSOJUifyYpQCzj1E440ja0yAlq6WY3g67zlr793tio8JVy2y5J3/5x3NXsqbB+ekplkZ+yVXmTuXAwfKxDf3yelxssa6+MWUkUY9cGSsgf2yQP50FWm9CjyIFpE6wJxEn3UWaF4JAQdWatMKKMOFHZSioTDiCIbNjUrmcS1oxQZtOgPWgr7qAdFcqEZXJuPG3kvS+RGlCkf7sVc8f12Kiftoez+y+owaGj3C0i48yO7S+9vO1Ug0mQaMJHDdjosnsnnZMT4l6UpIqRHns4ESCnExnMxQmk3AfC/1qECfF5MflABA0OBhHazO6+OjSULB0qc8c9WqnrQUZ5xs8YaU5s9KpesVNLc=
-    - COMMIT=${TRAVIS_COMMIT::8}
 
 services:
   - docker
 
-before_install:
-  - export TAG=$(git ls-remote --tags | awk '{print $2}' | grep -v '{}' | awk -F"/" '{print $3}' | tail -n 1)
-  - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  - docker build -t devopsunicorn/buoy:$COMMIT .
-  - docker run -d --name test devopsunicorn/buoy:$COMMIT
-  - docker ps -a
+before_script:
+  - "./scripts/docker-build.sh"
 
 script:
   - docker exec test go test -v .
 
-after_success:
+after_script:
   - docker tag devopsunicorn/buoy:$COMMIT devopsunicorn/buoy:$TAG  
   - docker push devopsunicorn/buoy:$TAG
 
