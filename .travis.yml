@@ -26,7 +26,7 @@ script:
   - go mod download
   - go test -v .
   - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o buoy .
-
+  - echo $GH_PERSONAL_TOKEN
 deploy:
   provider: releases
   skip_cleanup: true
