@@ -1,7 +1,7 @@
 FROM golang:1.16.3 as builder
 WORKDIR /go/src/github.com/devops-unicorn/buoy
-RUN go get -d -v golang.org/x/net/html
 COPY .  .
+RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o buoy .
 
 FROM alpine:latest
