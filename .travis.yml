@@ -35,7 +35,8 @@ deploy:
   draft: true
   on:
     repo: devops-unicorn/buoy
-
+    all_branches: true
+    # tags: true
 
 # script:
 #   - go test -v .
