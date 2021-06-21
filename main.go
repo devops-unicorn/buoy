@@ -46,6 +46,7 @@ func main() {
 			fmt.Println("Please specify cron duration.")
 			os.Exit(1)
 		}
+		// buoy config --component storage --duration '* * * *'
 		componentChoices := map[string]bool{"storage": true, "network": true, "image": true}
 		if _, validChoice := componentChoices[*componentFlag]; !validChoice {
 			configCommand.PrintDefaults()

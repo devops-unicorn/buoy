@@ -17,7 +17,7 @@ type Scheduler struct {
 
 func StartScheduler(cronExpression string) {
 	c := cron.New()
-	c.AddFunc("0 30 * * * *", func() { fmt.Println("Every hour on the half hour") })
+	c.AddFunc(cronExpression, func() { fmt.Println("Every hour on the half hour") })
 	c.Start()
 
 	// Inspect the cron job entries' next and previous run times.
